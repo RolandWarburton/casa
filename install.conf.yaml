@@ -1,0 +1,10 @@
+create:
+  - ~/.config/abc
+  - /tmp/test/test/abc
+link:
+  - destination: ~/.local/scripts
+    path: .local/scripts
+    if: >
+      [ "$(getent passwd $(whoami) | awk -F: '{print $7}')" = "/usr/bin/zsh" ]
+  - destination: /tmp/myfile
+    path: .local/scripts/test
