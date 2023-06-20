@@ -105,6 +105,20 @@ func createSymlink(source, target string) error {
 	}
 	source = path.Join(wd, source)
 
+	// check the source exists
+	_, err = os.Stat(source)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return fmt.Errorf("source does not exist: %s", err)
+		}
+		return fmt.Errorf("[ERROR] failed to check for source: %s", err)
+	}
+
+	// Remove the target path if it already exists
+	if err := os.Remove(target); err != nil && !os.IsNotExist(err) {
+		return fmt.Errorf("[ERROR] failed to remove existing target: %v", err)
+	}
+
 	// Create the symlink
 	if err := os.Symlink(source, target); err != nil {
 		return fmt.Errorf("[ERROR] failed to create symlink: %v", err)
