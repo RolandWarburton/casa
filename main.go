@@ -34,7 +34,7 @@ func main() {
 
 	// create all the required folders
 	for _, createPath := range config.Create {
-		err := CreatePathDir(createPath)
+		err := CreatePathDir(createPath, true)
 		if err != nil {
 			fmt.Println(err)
 		}
