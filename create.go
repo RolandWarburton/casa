@@ -22,9 +22,13 @@ func CreatePathDir(path string, params ...bool) error {
 
 	// Check if the directory already exists and skip it
 	_, err := os.Stat(expandedPath)
-	if err != nil || os.IsNotExist(err) {
+	if err != nil && !os.IsNotExist(err) {
+		return fmt.Errorf("failed to check directory existence: %v", err)
+	}
+
+	if err == nil {
 		if debug {
-			fmt.Printf("Directory already exists: %s\n", expandedPath)
+			fmt.Printf("[SKIPPING] Directory already exists: %s\n", expandedPath)
 		}
 		return nil
 	}
