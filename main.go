@@ -36,7 +36,7 @@ func main() {
 	for _, createPath := range config.Create {
 		err := CreatePathDir(createPath)
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println(err)
 		}
 	}
 
@@ -44,7 +44,7 @@ func main() {
 	for _, link := range config.Link {
 		err := LinkFile(link)
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println(err)
 		}
 	}
 }
