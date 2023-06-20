@@ -80,7 +80,7 @@ func createSymlink(source, target string) error {
 	if strings.HasPrefix(target, "~") {
 		usr, err := user.Current()
 		if err != nil {
-			return fmt.Errorf("failed to get current user: %v", err)
+			return fmt.Errorf("[ERROR] failed to get current user: %v", err)
 		}
 		target = filepath.Join(usr.HomeDir, target[1:])
 	}
@@ -92,16 +92,9 @@ func createSymlink(source, target string) error {
 	_, err := os.Stat(parentDir)
 	if err != nil {
 		if os.IsNotExist(err) {
-			// Parent directory does not exist
 			return fmt.Errorf("parent directory does not exist: %s", parentDir)
 		}
-		// Error occurred while checking the parent directory
-		return fmt.Errorf("failed to check parent directory: %v", err)
-	}
-
-	// Remove the target path if it already exists
-	if err := os.Remove(target); err != nil && !os.IsNotExist(err) {
-		return fmt.Errorf("failed to remove existing target: %v", err)
+		return fmt.Errorf("[ERROR] failed to check parent directory: %v", err)
 	}
 
 	// the source is relative to the working directory
@@ -114,7 +107,7 @@ func createSymlink(source, target string) error {
 
 	// Create the symlink
 	if err := os.Symlink(source, target); err != nil {
-		return fmt.Errorf("failed to create symlink: %v", err)
+		return fmt.Errorf("[ERROR] failed to create symlink: %v", err)
 	}
 
 	fmt.Printf("Created symlink: %s -> %s\n", target, source)
@@ -133,7 +126,7 @@ func LinkFile(link Link) error {
 	// create the symlink
 	err := createSymlink(link.Path, link.Destination)
 	if err != nil {
-		return fmt.Errorf("failed to create symlink: %v", err)
+		return fmt.Errorf("[ERROR] failed to create symlink: %v", err)
 	}
 	return nil
 }
