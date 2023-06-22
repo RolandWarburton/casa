@@ -22,7 +22,13 @@ jobs:
         go-version: 1.19
 
     - name: Build
-      run: go build -v ./...
+      run: go build -v -o ./casa
 
     - name: Test
-      run: go test -v ./...
+      run: go test -v .
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Build Artifact
+        path: ./casa
