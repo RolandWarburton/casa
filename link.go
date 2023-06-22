@@ -124,7 +124,7 @@ func createSymlink(source, target string) error {
 		return fmt.Errorf("[ERROR] failed to create symlink: %v", err)
 	}
 
-	fmt.Printf("Created symlink: %s -> %s\n", target, source)
+	fmt.Printf("[LINK] Created symlink: %s -> %s\n", target, source)
 	return nil
 }
 
