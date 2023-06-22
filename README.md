@@ -22,8 +22,8 @@ Either because i didn't want or need python installed. Or complications with ven
 
 ### DIY Philosophy
 
-Building your own tools creates an intimate understanding of your computing environment.
-I enjoy the comfort and familiarity of being at home on my computer.
+Building your own tools creates an intimate understanding
+and familiarity of your computing environment.
 
 ## Additional Information
 
@@ -94,7 +94,7 @@ Clean removes dead symlinks. Some simple rules apply to this.
 The working directory is the current directory you are executing the script from.
 Not where the script actually might be.
 
-Please keep the working directory this in mind,
+Please keep the working directory in mind,
 if you are executing from the home directory then any symlink pointing to
 a file inside the home directory could potentially be removed.
 
