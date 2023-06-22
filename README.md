@@ -35,11 +35,13 @@ create:
   - /tmp/test/test/abc
 link:
   - destination: ~/.local/scripts
-    path: .local/scripts
+    path: .local/scripts/test
     if: >
       [ "$(getent passwd $(whoami) | awk -F: '{print $7}')" = "/usr/bin/zsh" ]
-  - destination: /tmp/myfile
-    path: .local/scripts/test
+  - destination: /tmp/test/test/abc
+    path: abc
+clean:
+  - /tmp/test/test
 ```
 
 The order of the yaml file is not bearing on the order of operations. Casa will always execute in
