@@ -24,7 +24,7 @@ func main() {
 				Required:    true,
 			},
 		},
-		Action: func(cCtx *cli.Context) error {
+		Action: func(_ *cli.Context) error {
 			Program(configPath)
 			return nil
 		},
