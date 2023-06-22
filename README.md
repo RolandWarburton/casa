@@ -27,6 +27,21 @@ I enjoy the comfort and familiarity of being at home on my computer.
 
 ## Additional Information
 
+Casa requires a config file to operate, you can pass this in with `--config` or `-c`.
+
+A configuration has 3 root instructions.
+
+* Create - create directories.
+* Link - symlink files.
+* Clean - Check for dead symlink.
+
+The order of the yaml file (Create, Link, Clean) is not bearing on the order of operations.
+Casa will always execute in the following order.
+
+* Clean instructions in the order they are specified
+* Create instructions in the order they are specified
+* Link instructions in the order they are specified
+
 Here is a sample configuration `install.conf.yaml`.
 
 ```yaml
@@ -44,11 +59,73 @@ clean:
   - /tmp/test/test
 ```
 
-The order of the yaml file is not bearing on the order of operations. Casa will always execute in
-the following order.
+## Root Instructions
 
-* Create instructions in the order they are specified
-* Link instructions in the order they are specified
+### Create
+
+Paths specified under this instruction will be created if they do not exist, if they already exist
+they will be skipped.
+
+### Link
+
+Link describes how to symlink a file. The **destination** refers to your symlink,
+**path** refers to the file that **destination** will point to.
+
+Links also contain an optional **if** property. This will spawn a shell using `sh`
+and run your command, a non zero exit code will result in the link being skipped.
+
+```none
+                         symlink will point here
+                         this is typically a file inside your dotfiles repo
+                        +-----------------------------+
+Path------------------->|/home/roland/dotfiles/scripts|
+                        +-----------------------------+
+
+                        symlink will be placed here
+                        +---------------------------+
+Destination------------>|/home/roland/.local/scripts|
+                        +---------------------------+
+```
+
+### Clean
+
+Clean removes dead symlinks. Some simple rules apply to this.
+
+The working directory is the current directory you are executing the script from.
+Not where the script actually might be.
+
+Please keep the working directory this in mind,
+if you are executing from the home directory then any symlink pointing to
+a file inside the home directory could potentially be removed.
+
+```none
++---------------+ for each link+-----------------+
+|walk the       |------------->|Is the link dead?|
+|clean directory|              +-----------------+
++---------------+                  |       |
+                                   v       v
+                                 +---+   +---+
+                                 |yes|   |no |----+
+                                 +---+   +---+    |
+                                   |              v
+                                   v         +---------+
+                      +-----------------+    |no action|
+                      |does the link    |    +---------+
+                      |point to a file  |         ^
+                      |inside the       |         |
+                      |working directory|         |
+                      +-----------------+         |
+                            |       |             |
+                            v       v             |
+                          +---+   +---+           |
+                          |yes|   |no |-----------+
+                          +---+   +---+
+                            |
+                            v
+                    +------------------+
+                    |delete the symlink|
+                    +------------------+
+```
 
 ## Releasing
 
