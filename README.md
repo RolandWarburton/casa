@@ -50,6 +50,16 @@ the following order.
 * Create instructions in the order they are specified
 * Link instructions in the order they are specified
 
+## Releasing
+
+Releases can be made from the command line.
+
+```bash
+gh release upload v0.0.1 ./casa
+gh release create v0.0.1 --repo RolandWarburton/casa --target $(git rev-parse HEAD) --title "Release v0.0.1" --notes "Initial release" 
+gh release upload v0.0.1 ./casa
+```
+
 ## TODO
 
 Expect perhaps a couple more items to be added to this list,
