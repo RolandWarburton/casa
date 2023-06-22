@@ -8,5 +8,5 @@ link:
       [ "$(getent passwd $(whoami) | awk -F: '{print $7}')" = "/usr/bin/zsh" ]
   - destination: /tmp/test/test/abc
     path: abc
-# clean:
-#   - /tmp/test/test
+clean:
+  - /tmp/test/test

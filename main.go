@@ -17,6 +17,7 @@ type Link struct {
 type Dotfiles struct {
 	Link   []Link   `yaml:"link"`
 	Create []string `yaml:"create"`
+	Clean  []string `yaml:"clean"`
 }
 
 func main() {
@@ -31,6 +32,14 @@ func main() {
 	err = yaml.Unmarshal(yamlData, &config)
 	if err != nil {
 		log.Fatalf("Failed to unmarshal YAML: %v", err)
+	}
+
+	// clean all the required folders
+	for _, cleanPath := range config.Clean {
+		_, err := CleanSymlinks(cleanPath)
+		if err != nil {
+			fmt.Println(err)
+		}
 	}
 
 	// create all the required folders

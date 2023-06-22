@@ -56,6 +56,6 @@ but not a lot in order to keep scope small.
 - [x] Create top level instruction
 - [x] Link top level instruction
 - [x] IF property for a link
-- [ ] Clean top level instruction (removes specified symlinks)
+- [x] Clean top level instruction (removes specified symlinks)
 - [ ] Command line arguments (custom yaml file name, custom working directory?)
 - [ ] Testing
