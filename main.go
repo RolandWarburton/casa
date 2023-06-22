@@ -1,60 +1,36 @@
 package main
 
 import (
-	"fmt"
-	"io/ioutil"
 	"log"
+	"os"
 
-	"gopkg.in/yaml.v2"
+	"github.com/urfave/cli/v2"
 )
 
-type Link struct {
-	Destination string `yaml:"destination"`
-	Path        string `yaml:"path"`
-	If          string `yaml:"if"`
-}
-
-type Dotfiles struct {
-	Link   []Link   `yaml:"link"`
-	Create []string `yaml:"create"`
-	Clean  []string `yaml:"clean"`
-}
-
 func main() {
-	yamlFile := "install.conf.yaml"
+	var configPath string
 
-	yamlData, err := ioutil.ReadFile(yamlFile)
-	if err != nil {
-		log.Fatalf("Failed to read YAML file: %v", err)
+	app := &cli.App{
+		Name:     "casa",
+		HelpName: "casa",
+		Usage:    "dotfiles linker",
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:        "config",
+				Value:       "install.conf.yaml",
+				Aliases:     []string{"c"},
+				Usage:       "configuration file",
+				Destination: &configPath,
+				Required:    true,
+			},
+		},
+		Action: func(cCtx *cli.Context) error {
+			Program(configPath)
+			return nil
+		},
 	}
 
-	var config Dotfiles
-	err = yaml.Unmarshal(yamlData, &config)
-	if err != nil {
-		log.Fatalf("Failed to unmarshal YAML: %v", err)
-	}
-
-	// clean all the required folders
-	for _, cleanPath := range config.Clean {
-		_, err := CleanSymlinks(cleanPath)
-		if err != nil {
-			fmt.Println(err)
-		}
-	}
-
-	// create all the required folders
-	for _, createPath := range config.Create {
-		err := CreatePathDir(createPath, true)
-		if err != nil {
-			fmt.Println(err)
-		}
-	}
-
-	// create all the required links
-	for _, link := range config.Link {
-		err := LinkFile(link)
-		if err != nil {
-			fmt.Println(err)
-		}
+	if err := app.Run(os.Args); err != nil {
+		log.Fatal(err)
 	}
 }
