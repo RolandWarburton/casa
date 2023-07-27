@@ -1,7 +1,5 @@
 # CASA
 
-Very much **WIP**. Not intended for use yet.
-
 > Casa is the Spanish word for home.
 > It can evoke a sense of warmth, comfort, and familiarity.
 > Invoking the idea of managing and organizing one's digital home or personal environment.
